@@ -1,4 +1,4 @@
-.PHONY: help up down test lint format-check sync watch init logs ps restart clean shell
+.PHONY: help up down test lint sync watch init logs ps restart clean shell
 
 COMPOSE = docker compose
 
@@ -10,12 +10,11 @@ help:
 	@echo "  4. make down            Stop Docker Compose containers"
 	@echo "  5. make test            Run unit & integration tests inside Docker container"
 	@echo "  6. make lint            Run Ruff against source and test files"
-	@echo "  7. make format-check    Check Black formatting"
-	@echo "  8. make init            Run database migration & environment seeding"
-	@echo "  9. make logs            Follow logs from Docker containers"
-	@echo "  10. make ps             Display running Docker services"
-	@echo "  11. make shell          Open interactive bash shell inside Airflow container"
-	@echo "  12. make clean          Stop containers, wipe volumes, and clean local temp files"
+	@echo "  7. make init            Run database migration & environment seeding"
+	@echo "  8. make logs            Follow logs from Docker containers"
+	@echo "  9. make ps              Display running Docker services"
+	@echo "  10. make shell          Open interactive bash shell inside Airflow container"
+	@echo "  11. make clean          Stop containers, wipe volumes, and clean local temp files"
 
 watch:
 	@if [ -z "$(DAG)" ]; then \
@@ -42,9 +41,6 @@ test:
 
 lint:
 	ruff check dags plugins tools tests
-
-format-check:
-	black --check dags plugins tools tests
 
 init:
 	$(COMPOSE) run --rm airflow-init

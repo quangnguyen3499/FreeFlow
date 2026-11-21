@@ -29,6 +29,7 @@ class TestDateUtils(unittest.TestCase):
     def test_unique_timestamp(self):
         ts1 = unique_timestamp()
         ts2 = unique_timestamp()
+        self.assertNotEqual(ts1, ts2)
         self.assertTrue(len(ts1) >= 15)
         # Verify formatting
         self.assertIn("_", ts1)

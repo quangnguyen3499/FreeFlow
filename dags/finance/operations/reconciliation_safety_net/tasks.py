@@ -6,7 +6,7 @@ import logging
 from typing import Any, Dict
 from airflow.operators.python import PythonOperator  # type: ignore
 
-from dags.common_utils.airflow import fetch_variable, task_return_value
+from dags.common_utils.airflow import fetch_variable
 from dags.common_utils.date import today_iso
 from dags.common_utils.notify import post_to_slack
 from plugins.hooks.database_hook import DatabaseHook

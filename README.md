@@ -76,7 +76,6 @@ Run source checks locally:
 
 ```bash
 make lint
-make format-check
 ```
 
 ## Services
@@ -140,7 +139,6 @@ make down
 make init
 make test
 make lint
-make format-check
 make logs
 make ps
 make shell

@@ -24,7 +24,7 @@ try:
 except ImportError:
     import plugins.airflow_compat  # noqa: F401
 
-from airflow.exceptions import AirflowSkipException, AirflowFailException, AirflowException  # type: ignore
+from airflow.exceptions import AirflowSkipException  # noqa: E402
 
 
 class MockDagRun:

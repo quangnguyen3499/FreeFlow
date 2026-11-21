@@ -4,6 +4,7 @@ import os
 import shutil
 import tempfile
 import unittest
+from unittest.mock import patch
 from plugins.hooks.storage_hook import StorageHook
 from plugins.operators.storage_operators import UploadToStorageOperator, DownloadFromStorageOperator
 
@@ -24,11 +25,16 @@ class TestStorageHook(unittest.TestCase):
 
     def test_upload_and_download_fallback(self):
         hook = StorageHook("storage_default")
-        dest = hook.upload_file(self.sample_file, "data/test_file.txt", bucket="test-bucket")
-        self.assertTrue(os.path.exists(dest))
+        with patch("boto3.client", side_effect=OSError("S3 unavailable")):
+            dest = hook.upload_file(
+                self.sample_file, "data/test_file.txt", bucket="test-bucket"
+            )
+            self.assertTrue(os.path.exists(dest))
 
-        download_target = os.path.join(self.temp_dir, "downloaded.txt")
-        hook.download_file("data/test_file.txt", download_target, bucket="test-bucket")
+            download_target = os.path.join(self.temp_dir, "downloaded.txt")
+            hook.download_file(
+                "data/test_file.txt", download_target, bucket="test-bucket"
+            )
         self.assertTrue(os.path.exists(download_target))
 
         with open(download_target, "r") as f:

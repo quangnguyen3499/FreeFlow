@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import os
 import shutil
-from typing import Any, Dict, List, Optional
+from typing import List
 from airflow.hooks.base import BaseHook  # type: ignore
 
 logger = logging.getLogger(__name__)

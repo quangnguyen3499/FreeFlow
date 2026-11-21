@@ -1,11 +1,10 @@
 """Unit and integration tests for Partner Billing ETL tasks."""
 
-from decimal import Decimal
 import unittest
 from unittest.mock import MagicMock, patch
 
 from tests import DagTestBase
-from airflow.exceptions import AirflowException, AirflowFailException  # type: ignore
+from airflow.exceptions import AirflowFailException  # type: ignore
 
 TASKS = "dags.finance.invoicing.partner_billing_etl.tasks"
 

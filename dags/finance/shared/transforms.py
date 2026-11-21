@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from decimal import Decimal, ROUND_HALF_UP
-from typing import Any, Dict, Union
+from typing import Dict, Union
 
 # Standard currency quantizers
 DECIMAL_PLACES_TWO = Decimal("0.01")

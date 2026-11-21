@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 from functools import lru_cache
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 from plugins.hooks.database_hook import DatabaseHook
 from plugins.hooks.partner_api_hook import PartnerApiHook, PartnerApiClient
 from plugins.hooks.gateway_hook import ServiceGatewayHook

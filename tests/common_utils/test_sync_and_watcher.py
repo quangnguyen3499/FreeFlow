@@ -3,21 +3,17 @@
 import os
 import shutil
 import tempfile
-import time
 import unittest
 
 from tools.sync import (
     read_manifest,
     sync_dag,
     get_enabled_dags,
-    save_enabled_dags,
     disable_dag,
-    clean_target,
 )
 from tools.watcher import (
     DagWatcher,
     find_all_manifest_dags,
-    get_files_snapshot,
 )
 
 

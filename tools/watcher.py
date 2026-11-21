@@ -22,7 +22,7 @@ if _repo_root not in sys.path:
 if os.getcwd() not in sys.path:
     sys.path.insert(0, os.getcwd())
 
-from tools.sync import (
+from tools.sync import (  # noqa: E402
     DEFAULT_TARGET_DIR,
     get_enabled_dags,
     read_manifest,

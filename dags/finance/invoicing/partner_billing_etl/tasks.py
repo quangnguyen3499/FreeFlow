@@ -33,7 +33,6 @@ from dags.common_utils.summary import RunSummary
 from dags.finance.shared.constants import (
     PARTNER_ALPHA,
     STATUS_BILLED,
-    STATUS_PROCESSING,
 )
 from dags.finance.shared.transforms import calculate_line_item, to_decimal
 from dags.finance.shared.validators import validate_single_record, verify_batch_invariants

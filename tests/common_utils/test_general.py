@@ -1,6 +1,10 @@
 """Unit tests for general utilities."""
 
 import unittest
+from dags.common_utils import general
+from dags.common_utils.file import load_csv as file_load_csv
+from dags.common_utils.file import load_json as file_load_json
+from dags.common_utils.file import load_yaml as file_load_yaml
 from dags.common_utils.general import (
     pretty,
     batch,
@@ -13,6 +17,11 @@ from dags.common_utils.general import (
 
 
 class TestGeneralUtils(unittest.TestCase):
+    def test_file_module_reexports_general_loaders(self):
+        self.assertIs(file_load_csv, general.load_csv)
+        self.assertIs(file_load_json, general.load_json)
+        self.assertIs(file_load_yaml, general.load_yaml)
+
     def test_pretty(self):
         data = {"key": "value", "count": 10}
         formatted = pretty(data)

@@ -8,7 +8,7 @@ Implements Section 5.1: Split Hook and Client architecture.
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 from airflow.hooks.base import BaseHook  # type: ignore
 from plugins.hooks.base_client import BaseHttpClient
 

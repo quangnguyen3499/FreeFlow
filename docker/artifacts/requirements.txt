@@ -1,0 +1,17 @@
+# Production & Local Testing Dependencies
+# Unified Docker image for all environments: "One Image Everywhere"
+
+apache-airflow==2.9.2
+pendulum>=3.0.0
+tenacity>=8.2.0
+requests>=2.31.0
+pyyaml>=6.0.1
+pydantic>=2.0.0
+
+# Testing & Code Quality
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-xdist>=3.3.0
+black>=23.9.0
+flake8>=6.1.0
+ruff>=0.6.0

@@ -1,0 +1,12 @@
+daily_partner_invoicing:
+  dag_id: "finance_trigger_daily_partner_invoicing"
+  schedule: "0 8 * * 1-5"
+  business_day_check: true
+  if_disabled: "skip"
+  conf:
+    target_date: "{{ today }}"
+    max_batch_size: 500
+  dags:
+    finance_process_partner_billing:
+      conf:
+        partner_code: "ALPHA_LOGISTICS"

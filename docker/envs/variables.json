@@ -1,0 +1,9 @@
+{
+  "staging_path": "staging",
+  "team_slack_channel": "finance-ops",
+  "finance_alert_email": "finance-ops@example.com",
+  "max_batch_size": 500,
+  "finance_db_conn_id": "main_db",
+  "partner_api_conn_id": "partner_billing_api",
+  "slack_webhook_url": "http://mock-api:8080/mock-slack"
+}

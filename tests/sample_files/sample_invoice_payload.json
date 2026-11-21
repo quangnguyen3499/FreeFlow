@@ -1,0 +1,34 @@
+{
+  "batch_id": "BATCH_ALPHA_SAMPLE_TEST",
+  "partner_code": "ALPHA_LOGISTICS",
+  "billing_date": "2026-11-16",
+  "total_amount": "10360.00",
+  "currency": "USD",
+  "total_items": 3,
+  "items": [
+    {
+      "transaction_id": "TXN_TEST_101",
+      "base_amount": "1500.00",
+      "fee_amount": "30.00",
+      "tax_amount": "150.00",
+      "total_billed": "1680.00",
+      "net_payout": "1470.00"
+    },
+    {
+      "transaction_id": "TXN_TEST_102",
+      "base_amount": "2750.00",
+      "fee_amount": "55.00",
+      "tax_amount": "275.00",
+      "total_billed": "3080.00",
+      "net_payout": "2695.00"
+    },
+    {
+      "transaction_id": "TXN_TEST_103",
+      "base_amount": "5000.00",
+      "fee_amount": "100.00",
+      "tax_amount": "500.00",
+      "total_billed": "5600.00",
+      "net_payout": "4900.00"
+    }
+  ]
+}

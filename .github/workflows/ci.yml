@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install quality tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff black
+
+      - name: Lint
+        run: ruff check dags plugins tools tests
+
+      - name: Check formatting
+        run: black --check dags plugins tools tests
+
+      - name: Sync the example DAG
+        run: ./sync dags/finance/invoicing/partner_billing_etl
+
+      - name: Start services
+        run: docker compose up -d postgres seaweedfs mock-api
+
+      - name: Run tests
+        run: docker compose run --rm test
+
+      - name: Stop services
+        if: always()
+        run: docker compose down -v

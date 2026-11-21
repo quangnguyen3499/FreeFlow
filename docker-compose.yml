@@ -1,0 +1,127 @@
+x-airflow-common: &airflow-common
+  build:
+    context: .
+    dockerfile: Dockerfile
+  environment:
+    - AIRFLOW__CORE__DAGS_FOLDER=/opt/airflow/enabled_dags/dags
+    - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    - AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION=False
+    - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+    - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+    - AIRFLOW_ENV=development
+    - PYTHONPATH=/opt/airflow:/opt/airflow/enabled_dags
+  volumes:
+    - ./plugins:/opt/airflow/plugins
+    - ./tests:/opt/airflow/tests
+    - ./docker/envs:/opt/airflow/docker/envs
+    - ./staging:/opt/airflow/staging
+    - ./tools:/opt/airflow/tools
+    - ./enabled_dags:/opt/airflow/enabled_dags
+  depends_on:
+    postgres:
+      condition: service_healthy
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+
+  airflow-init:
+    <<: *airflow-common
+    command: >
+      bash -c "echo '=== 1. Running Airflow DB migrations ===' &&
+               (airflow db migrate || airflow db init) &&
+               echo '=== 2. Creating admin user ===' &&
+               (airflow users create --username admin --password admin --firstname Airflow --lastname Admin --role Admin --email admin@example.com || true) &&
+               echo '=== 3. Loading environment variables and connections ===' &&
+               python3 tools/init_env.py &&
+               echo '=== Airflow Init Completed Successfully ==='"
+    restart: "no"
+
+  airflow-webserver:
+    <<: *airflow-common
+    command: airflow webserver
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    restart: always
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: airflow scheduler
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    restart: always
+
+  test:
+    <<: *airflow-common
+    entrypoint: []
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    environment:
+      - AIRFLOW_ENV=test
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+    command: pytest -s -vvv tests
+    profiles:
+      - test
+    restart: "no"
+
+  airflow-cli:
+    <<: *airflow-common
+    entrypoint: []
+    command: bash
+    profiles:
+      - cli
+    restart: "no"
+
+  mock-api:
+    image: python:3.11-alpine
+    volumes:
+      - ./tools/mock_server.py:/mock_server.py
+    command: python3 /mock_server.py 8080
+    ports:
+      - "8081:8080"
+    restart: always
+
+  seaweedfs:
+    image: chrislusf/seaweedfs:latest
+    command: "server -dir=/data -s3 -s3.port=8333 -s3.config=/etc/seaweedfs/s3.json -volume.port=8085"
+    ports:
+      - "8333:8333"
+      - "9333:9333"
+      - "8888:8888"
+    volumes:
+      - seaweed-data-volume:/data
+      - ./docker/seaweedfs/s3.json:/etc/seaweedfs/s3.json:ro
+    restart: always
+
+volumes:
+  postgres-db-volume:
+  seaweed-data-volume:

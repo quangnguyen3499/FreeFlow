@@ -1,0 +1,41 @@
+{
+  "main_db": {
+    "conn_type": "sqlite",
+    "host": "staging/main_dev.db",
+    "schema": "staging/main_dev.db",
+    "login": "",
+    "password": "",
+    "extra": {
+      "timeout": 15
+    }
+  },
+  "service_gateway": {
+    "conn_type": "http",
+    "host": "http://mock-api:8080",
+    "login": "gateway_user",
+    "password": "dev_gateway_token_123",
+    "extra": {
+      "timeout": 20,
+      "routing_header": "X-Target-Service"
+    }
+  },
+  "partner_billing_api": {
+    "conn_type": "http",
+    "host": "http://mock-api:8080",
+    "login": "partner_alpha_user",
+    "password": "mock_api_key_partner_alpha_secret",
+    "extra": {
+      "timeout": 30
+    }
+  },
+  "storage_default": {
+    "conn_type": "s3",
+    "host": "http://seaweedfs:8333",
+    "login": "seaweedadmin",
+    "password": "seaweedadminpassword",
+    "extra": {
+      "endpoint_url": "http://seaweedfs:8333",
+      "region_name": "us-east-1"
+    }
+  }
+}
